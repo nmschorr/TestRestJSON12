@@ -19,6 +19,9 @@ import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import io.restassured.http.ContentType;
+import io.restassured.config.*;
+
 import org.junit.runners.MethodSorters;
 import org.junit.AfterClass;
 import org.junit.After;
@@ -31,20 +34,69 @@ import static org.junit.Assert.*;
 
 
 
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRestJSON {
-	
+
+	@BeforeClass  //run once before each testsuite
+	public static void TestRestJSONsetup() {
+		LogConfig logconfig = new LogConfig().enableLoggingOfRequestAndResponseIfValidationFails().enablePrettyPrinting(true);
+		RestAssured.config().logConfig(logconfig);
+	}
+
+
 
 	@Test
-	public void testDemo() throws Exception {
+	public void atestDemo() throws Exception {
 		System.setProperty("http.agent", "Chrome");
 		System.out.println("Beginning...");
 		RestAssured.baseURI  = "http://jsonplaceholder.typicode.com/albums";
 		RequestSpecification httpRequest = given();
 		Response response = httpRequest.request(Method.GET, "/1");
 		String responseBody = response.getBody().asString();
-		System.out.println("Response Body is =>  " + responseBody);
-				
+
+		System.out.println("Response Body is =>  \n" + responseBody);
+
+		get("/1").then().body("/1/userId", equalTo(1));
+		System.out.println("\nTest Finished\n\n");
+	}
+
+
+	@Test
+	public void exampleRestTest() {
+		System.setProperty("http.agent", "Chrome");
+		System.out.println("\nin 2nd part");
+		System.out.println("Beginning...");
+		RestAssured.baseURI  = "http://jsonplaceholder.typicode.com/albums";
+		//RequestSpecification httpRequest = given();
+		given()
+		.contentType(ContentType.JSON)
+		.pathParam("id", "9")
+		.log().all()
+		.when()
+		.get("/4/{id}")
+		.then().log().all()
+		.assertThat()
+		.statusCode(200).and()
+		.contentType(ContentType.JSON).and()
+		.body("id", equalTo("1"))
+		.body("title", equalTo("quidem molestiae enim"))
+		.extract().response();
+	}
+
+
+	//	RestAssured.given().log().all()
+	//    .header("Content-Type", "application/XML; charset=utf-8")
+	//    .body("")
+	//    .when().post("/bxfxml")
+	//    .then().log().all()
+	//    .assertThat()
+	//    .statusCode(200).and()
+	//    .contentType(ContentType.XML)
+	//    .extract().response();
+
+
+	@AfterClass
+	public static void cleanup() {
 		System.out.println("\nProgram Finished");
 	}
 
