@@ -1,4 +1,4 @@
-/* TestRestJson by Nancy Schorr, 2016/2018
+/* TestRestJSON by Nancy Schorr, 2016/2018
  Demonstrates use of apis to read a json formatted text file and store it as a JSON object for further manipulation.
  Also goes to url http://jsonplaceholder.typicode.com/albums and reads the data and store it in various objects.
  2018 : added rest assured.
@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 
 
 
-public class TestRestJson {
+public class TestRestJSON {
 	
 
 	@Test
