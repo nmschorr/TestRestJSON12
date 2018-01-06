@@ -1,24 +1,44 @@
 package config; 
 
-import org.junit.BeforeClass;
 import io.restassured.RestAssured;
 import  io.restassured.builder.RequestSpecBuilder;
+import  io.restassured.builder.ResponseSpecBuilder;
 import  io.restassured.specification.RequestSpecification;
+import  io.restassured.specification.ResponseSpecification;
+import org.junit.BeforeClass;
 
 public class TestConfig {
-	
-	@BeforeClass
+    public static RequestSpecBuilder builder;
+    
+	public static RequestSpecification arspec;
+    public static RequestSpecification requestSpec;
+    public static ResponseSpecification responseSpec;
+
+    @BeforeClass
 	public static void SetUp() {
-		RestAssured.baseURI = ("http://jsonplaceholder.typicode.com");
-		RestAssured.basePath = ("/albums");
+			
+       builder = new RequestSpecBuilder();
+       builder.setBaseUri("http://jsonplaceholder.typicode.com");     
+       builder.setBasePath("/albums");     //   "http://jsonplaceholder.typicode.com", null);
+       builder.setPort(80);
+       builder.addHeader("ContentType", "application/json; charset=utf-8");
+       requestSpec = builder.build();
+        
+		arspec = new RequestSpecBuilder().
+				setBaseUri("http://jsonplaceholder.typicode.com").
+			    setBasePath("/albums").
+				setPort(80).               
+ 				addHeader("ContentType", "application/json; charset=utf-8").
+ 				addHeader("Content-Encoding", "gzip").
+				addHeader("X-Content-Type-Options","nosniff").
+				build();
+
+	//RestAssured.requestSpecification = arspec;
+			
+    		responseSpec = new ResponseSpecBuilder()
+				.expectStatusCode(200)
+				.build();
 		
-		
-		RequestSpecification requestSpecification = new RequestSpecBuilder()
-				.addHeader("ContentType", "application/json")
-				.addHeader("Accept", "application/json").build();
-		RestAssured.requestSpecification = requestSpecification;
-		
-		
-		
-    }
+		 RestAssured.responseSpecification = responseSpec;    
+ }
 }
