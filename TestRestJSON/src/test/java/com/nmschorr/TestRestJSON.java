@@ -9,51 +9,61 @@ import config.TestConfig;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import  io.restassured.http.*;
 import    io.restassured.builder.*;
 import  io.restassured.response.Response;
 import     io.restassured.specification.*;
 
 
 public  class TestRestJSON extends TestConfig {
-  public static String jsonAsString;
-  
-  
-	  @Test
-		public void newtestDemo2()  {
-		    String myData =  "{\n"  +  		"  \"userId\":333,\n"  +  
-		            "  \"id\":3333,\n" +  
-		    		"  \"title\":\"mynewbook\"\n " +  "}";
-	     //   String newendpoint = "/1/";
-//given().
-Response response =			given().
-			log().all().
-			//spec(typicodeSpec).
-			when().get("/2/").
-			
-						//get().
-			then().assertThat().body(containsString("sunt qui excepturi placeat culpa")).and().body(containsString("qui")).
-			and().body( containsString("id")).
-			extract().response();
-System.out.println("response: " );	  
-System.out.println(response.asString()); 
+	public static String jsonAsString;
 
-	        String responseBody = given().when().get().asString();
-	        System.out.println("\n\n\n ---------responsebody: " );	  
-	        System.out.println(responseBody);	 
-	        }
+
+	@Test
+	public void newtestDemo2()  {
+		String myData =  "{\n"  +  		"  \"userId\":333,\n"  +  
+				"  \"id\":3333,\n" +  
+				"  \"title\":\"mynewbook\"\n " +  "}";
+		//   String newendpoint = "/1/";
+		//given().
+	 Response response =			
+				given().
+				log().all().
+				spec(blobSpec).
+				when().
+				get(). 
+				then().
+				contentType(ContentType.JSON).
+				extract().response();
+				
+	 String respStr = response.toString();
+	 System.out.println("\n Response:   " + respStr);
+				
+				//then().assertThat().body(containsString("nancy")).
+				//and().body(containsString("a")).
+				//and().body( containsString("id")).
+		//		extract().response();
+	//	System.out.println("response: " );	  
+//		System.out.println(response.asString()); 
+
+	//	String responseBody = given().when().get().asString();
+		
+	//	System.out.println("\n\n\n ---------responsebody: " );	  
+	//	System.out.println(responseBody);	 
+	}
 
 	//@Test
 	public void newtestDemo()  {
- 		System.out.println("Beginning...");
+		System.out.println("Beginning...");
 		given().log().all().
-		spec(arspec).
+		spec(blobSpec).
 		when().
 		get().
 		//get("/1/").
 		//when().get(EndPoint.SINGLE_ALBUM).
-			then().
-			log().all();		
-		}
+		then().
+		log().all();		
+	}
 }
 
 
