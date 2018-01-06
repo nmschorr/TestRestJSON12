@@ -6,19 +6,13 @@
 package com.nmschorr;
 
 import config.TestConfig;
-import io.restassured.response.Response;
-
 import org.junit.Test;
-import static io.restassured.RestAssured.given;
-import io.restassured.RestAssured;
-//import static org.hamcrest.Matchers.lessThan;
-//import static io.restassured.matcher.RestAssuredMatchers.matchesXsdInClasspath;
-//import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath ;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
 
 public  class TestRestJSON extends TestConfig {
   public static String jsonAsString;
-  public static Response response;
   
   
 	  @Test
@@ -30,18 +24,16 @@ public  class TestRestJSON extends TestConfig {
 
 			given().
 			log().all().
-			spec(arspec).
-			when().
-			get().then().
-			assertThat().
-			body(matchesJsonSchemaInClasspath("enim"));
-				// assertThat().body("title", contains("molestiae enim")); 
-				//.statusCode(200);
+			//spec(typicodeSpec).
+			when().get("/2/").
+						//get().
+			then().assertThat().body(containsString("sunt")).and().body(containsString("qui")).
+
+			log().all();
 	  }
 
 	//@Test
 	public void newtestDemo()  {
-	
  		System.out.println("Beginning...");
 		given().log().all().
 		spec(arspec).
@@ -49,7 +41,6 @@ public  class TestRestJSON extends TestConfig {
 		get().
 		//get("/1/").
 		//when().get(EndPoint.SINGLE_ALBUM).
-		 //when().get("/1/").
 			then().
 			log().all();		
 		}
