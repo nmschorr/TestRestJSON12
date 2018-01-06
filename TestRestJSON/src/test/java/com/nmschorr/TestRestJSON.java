@@ -23,15 +23,46 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 
 public  class TestRestJSON extends TestConfig {
 
-    @Test
+	  @Test
+		public void newtestDemo2()  {
+		    String myData =  "{\n"  + 
+		    		"  \"userId\":333,\n"  +  
+		            "  \"id\":3333,\n" +  
+		    		"  \"title\":\"mynewbook\"\n " + 
+		            "}";
+																			//		    String gameBodyJson = "{\n" +
+																			//	                "  \"id\": 11,\n" +
+																			//	                "  \"name\": \"MyNewGame\",\n" +
+																			//	                "  \"releaseDate\": \"2017-12-07T11:49:25.712Z\",\n" +
+																			//	                "  \"reviewScore\": 50,\n" +
+																			//	                "  \"category\": \"Driving\",\n" +
+																			//	                "  \"rating\": \"Mature\"\n" +
+																			//	                "}";
+		    															//    String VIDEOGAMES = "/videogames";
+
+	         String newendpoint = "/kbxij";
+
+			given().body(myData).
+			log().all().
+			spec(arspec).
+			when().
+			//get().
+			post(newendpoint).
+			//when().get(EndPoint.SINGLE_ALBUM).
+			 //when().get("/1/").
+				then().
+				log().all();		
+			}
+
+	  //@Test
 	public void newtestDemo()  {
 	
  		System.out.println("Beginning...");
 		given().log().all().
 		spec(arspec).
-								//log().ifValidationFails().
-								//when().get(EndPoint.SINGLE_ALBUM1).
-		 when().get("/1/").
+		when().get().
+		//when().get(EndPoint.SINGLE_ALBUM).
+		 //when().get("/1/").
 			then().
 			log().all();		
 		}

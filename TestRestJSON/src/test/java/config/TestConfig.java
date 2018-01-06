@@ -16,18 +16,22 @@ public class TestConfig {
 
     @BeforeClass
 	public static void SetUp() {
-			
+    	RestAssured.proxy("localhost", 8888);			
        builder = new RequestSpecBuilder();
        builder.setBaseUri("http://jsonplaceholder.typicode.com");     
        builder.setBasePath("/albums");     //   "http://jsonplaceholder.typicode.com", null);
-       builder.setPort(80);
+       builder.setPort(8888);
        builder.addHeader("ContentType", "application/json; charset=utf-8");
        requestSpec = builder.build();
         
 		arspec = new RequestSpecBuilder().
-				setBaseUri("http://jsonplaceholder.typicode.com").
-			    setBasePath("/albums").
-				setPort(80).               
+				setBaseUri("https://api.myjson.com").
+				//https://api.myjson.com/bins/kbxij
+				//setBaseUri("http://jsonplaceholder.typicode.com").
+			  //  setBasePath("/albums").
+			    setBasePath("/bins").
+			  //  setBasePath("/kbxij").
+			setPort(8080).               
  				addHeader("ContentType", "application/json; charset=utf-8").
  				addHeader("Content-Encoding", "gzip").
 				addHeader("X-Content-Type-Options","nosniff").
