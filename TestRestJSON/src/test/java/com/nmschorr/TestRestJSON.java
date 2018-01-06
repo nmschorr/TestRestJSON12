@@ -21,14 +21,14 @@ public  class TestRestJSON extends TestConfig {
 		            "  \"id\":3333,\n" +  
 		    		"  \"title\":\"mynewbook\"\n " +  "}";
 	     //   String newendpoint = "/1/";
-
+//given().
 			given().
 			log().all().
 			//spec(typicodeSpec).
 			when().get("/2/").
 						//get().
-			then().assertThat().body(containsString("sunt")).and().body(containsString("qui")).
-
+			then().assertThat().body(containsString("sunt qui excepturi placeat culpa")).and().body(containsString("qui")).
+			and().body( containsString("id")).
 			log().all();
 	  }
 

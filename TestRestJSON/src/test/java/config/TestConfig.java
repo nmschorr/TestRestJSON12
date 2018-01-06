@@ -24,13 +24,14 @@ public class TestConfig {
     	typicodebuilder.setPort(80);
     	typicodebuilder.addHeader("ContentType", "application/json");
         typicodeSpec = typicodebuilder.build();
-       
+    RestAssured.requestSpecification = typicodeSpec;
+      
        String mybase        = "https://jsonblob.com";
        String mybasepath = "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 		arspec = new RequestSpecBuilder().
 				setBaseUri(mybase).
 			    setBasePath(mybasepath).
-			    addHeader("ContentType", "application/json").
+			    //addHeader("ContentType", "application/json").
 			    							//    addHeader("ContentType", "application/json; charset=utf-8").
 			    addHeader("Accept", "application/json").
 				build();
