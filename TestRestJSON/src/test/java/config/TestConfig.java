@@ -8,38 +8,36 @@ import  io.restassured.specification.ResponseSpecification;
 import org.junit.BeforeClass;
 
 public class TestConfig {
-    public static RequestSpecBuilder builder;
-    
+    public static RequestSpecBuilder typicodebuilder;
+    public static RequestSpecification typicodeSpec;
+ 
 	public static RequestSpecification arspec;
-    public static RequestSpecification requestSpec;
     public static ResponseSpecification responseSpec;
 
     @BeforeClass
 	public static void SetUp() {
-    	RestAssured.proxy("localhost", 8888);			
-       builder = new RequestSpecBuilder();
-       builder.setBaseUri("http://jsonplaceholder.typicode.com");     
-       builder.setBasePath("/albums");     //   "http://jsonplaceholder.typicode.com", null);
-       builder.setPort(8888);
-       builder.addHeader("ContentType", "application/json; charset=utf-8");
-       requestSpec = builder.build();
-        
+    	RestAssured.proxy("localhost", 8888);	
+
+    	typicodebuilder = new RequestSpecBuilder();
+    	typicodebuilder.setBaseUri("http://jsonplaceholder.typicode.com");     
+    	typicodebuilder.setBasePath("/albums");      
+    	typicodebuilder.setPort(80);
+    	typicodebuilder.addHeader("ContentType", "application/json");
+        typicodeSpec = typicodebuilder.build();
+       
+       String mybase        = "https://jsonblob.com";
+       String mybasepath = "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 		arspec = new RequestSpecBuilder().
-				setBaseUri("https://api.myjson.com").
-				//https://api.myjson.com/bins/kbxij
-				//setBaseUri("http://jsonplaceholder.typicode.com").
-			  //  setBasePath("/albums").
-			    setBasePath("/bins").
-			  //  setBasePath("/kbxij").
-			setPort(8080).               
- 				addHeader("ContentType", "application/json; charset=utf-8").
- 				addHeader("Content-Encoding", "gzip").
-				addHeader("X-Content-Type-Options","nosniff").
+				setBaseUri(mybase).
+			    setBasePath(mybasepath).
+			    addHeader("ContentType", "application/json").
+			    							//    addHeader("ContentType", "application/json; charset=utf-8").
+			    addHeader("Accept", "application/json").
 				build();
 
 	//RestAssured.requestSpecification = arspec;
 			
-    		responseSpec = new ResponseSpecBuilder()
+    		responseSpec = new ResponseSpecBuilder() 
 				.expectStatusCode(200)
 				.build();
 		
