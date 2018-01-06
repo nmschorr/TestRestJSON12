@@ -9,6 +9,9 @@ import config.TestConfig;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import    io.restassured.builder.*;
+import  io.restassured.response.Response;
+import     io.restassured.specification.*;
 
 
 public  class TestRestJSON extends TestConfig {
@@ -22,15 +25,22 @@ public  class TestRestJSON extends TestConfig {
 		    		"  \"title\":\"mynewbook\"\n " +  "}";
 	     //   String newendpoint = "/1/";
 //given().
-			given().
+Response response =			given().
 			log().all().
 			//spec(typicodeSpec).
 			when().get("/2/").
+			
 						//get().
 			then().assertThat().body(containsString("sunt qui excepturi placeat culpa")).and().body(containsString("qui")).
 			and().body( containsString("id")).
-			log().all();
-	  }
+			extract().response();
+System.out.println("response: " );	  
+System.out.println(response.asString()); 
+
+	        String responseBody = given().when().get().asString();
+	        System.out.println("\n\n\n ---------responsebody: " );	  
+	        System.out.println(responseBody);	 
+	        }
 
 	//@Test
 	public void newtestDemo()  {
