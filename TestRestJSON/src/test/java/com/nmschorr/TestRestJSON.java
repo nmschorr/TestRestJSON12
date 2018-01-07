@@ -7,6 +7,8 @@ package com.nmschorr;
 
 import config.TestConfig;
 import config.EndPoint;
+import org.json.JSONObject;
+
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import  io.restassured.http.*;
@@ -16,12 +18,12 @@ import  io.restassured.specification.*;
 
 public  class TestRestJSON extends TestConfig {
 											public static String jsonAsString;
-											public static String newPeep =  "{\"/peeps/peepsId\":2}";
-												public static String postLoc = EndPoint.BLOB_ENDPOINT + "/peeps";
+											public static String newPeep =  "{\"id\":0}";
+										 public static String postLoc = EndPoint.BLOB_ENDPOINT;
 									 
-
-		//------------------------------------- test 1 --------------------------------------
-	//@Test
+ 
+ 		//------------------------------------- test 1 --------------------------------------
+	@Test
 	public void blobTest1()  {
 		System.out.println("\n\n---------------Beginning blobTest1 --------------------\n\n");
 		
@@ -31,6 +33,8 @@ public  class TestRestJSON extends TestConfig {
 				spec(blobSpec).
 				when().
 				get(EndPoint.BLOB_ENDPOINT).asString();
+		
+		System.out.println(responseStr);
 
 		int  a = 0;             // for dev
 
@@ -39,7 +43,7 @@ public  class TestRestJSON extends TestConfig {
 	}
 
 			//------------------------------------- test 2 --------------------------------------
-	//@Test
+	@Test
 	public void blobTest2()  {
 		System.out.println("\n\n---------------Beginning blobTest2---------------------\n\n");
 		
@@ -56,6 +60,7 @@ public  class TestRestJSON extends TestConfig {
 		Headers headers = response2.getHeaders();
 		String contentType = response2.getHeader("Content-Type");
 		System.out.println("\n\n contentType blobTest2:   " + contentType);
+		System.out.println("here is body:     "  + response2.getBody().asString().toString()        );
 		int  a = 1;  // for dev
 	}
 
@@ -76,15 +81,34 @@ public  class TestRestJSON extends TestConfig {
 	//------------------------------------- test 4 --------------------------------------
 	@Test
 	public void blobTest4()  {
+
+		
+		
+		String myString2 = "{\n" +
+                "  \"id\": 15,\n" +
+                "  \"name\": \"MyNewGame5\",\n" +
+                "  \"releaseDate\": \"2017-12-07T11:49:25.755Z\",\n" +
+                "  \"reviewScore\": 45,\n" +
+                "  \"category\": \"Driving55\",\n" +
+                "  \"rating\": \"Mature5\"\n" +
+                "}";
+
+		
 		System.out.println("\n\n---------------Beginning blobTest4---------------------\n\n");
 		System.out.println("\n\npostLoc: " + postLoc + "\n\n");
 		System.out.println("\n\n newPeep: " + newPeep + "\n\n");
- 
+	       String		myString = new JSONObject()
+							.put("id", 92).toString();
+			boolean  b= false;  // for dev
+
 		 given().spec(blobSpec).
-		 body (newPeep).
+		 			body (myString).
 				    when().
-				    contentType (ContentType.JSON).
-				    post(postLoc);
+				//    put(EndPoint.BLOB_ENDPOINT);  //works!!!
+		      post(EndPoint.BLOB_ENDPOINT);  //works!!!
+		 
+		 
+		 
 			System.out.println( postLoc);
 			boolean  a = false;  // for dev
      } // test4

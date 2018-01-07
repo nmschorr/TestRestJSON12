@@ -17,6 +17,8 @@ public class TestConfig {
 												//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3
 												// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 
+ 
+ 	
 	@BeforeClass
 	public static void SetUp() {
 		RestAssured.proxy("localhost", 8888);	
@@ -26,10 +28,16 @@ public class TestConfig {
 		blobSpec = new RequestSpecBuilder().
 				setBaseUri(blobBase).
 				setBasePath(blobBasePath).
-				addHeader("ContentType", "application/json").
+				setPort(8080).
+				//addHeader("ContentType", "application/json").
+				addHeader("Content-Type", "application/json").
 				addHeader("Accept", "application/json").
-				build();
+				//addHeader("X-jsonblob","5226571730043f8b22dadc20").
+				addHeader("X-jsonblob","53998288-f328-11e7-8877-3d11de9ec1d3").
+			    build();
+	//    String BLOB_ENDPOINT = "53998288-f328-11e7-8877-3d11de9ec1d3";
 	 
+		System.out.println(blobSpec.toString());
 			//RestAssured.requestSpecification = blobSpec;
 			//TestConfig.SetUpTypicode();
 		TestConfig.SetUpResponse();
