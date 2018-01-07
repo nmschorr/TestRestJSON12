@@ -20,8 +20,8 @@ public class TestConfig {
 		RestAssured.proxy("localhost", 8888);	
 													//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3
 												// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
-		String blobBase        = "https://jsonblob.com";
-		String blobBasePath = "53998288-f328-11e7-8877-3d11de9ec1d3";
+		String blobBase        = "https://jsonblob.com"; 
+		String blobBasePath = "/api/jsonBlob";
 		blobSpec = new RequestSpecBuilder().
 				setBaseUri(blobBase).
 				setBasePath(blobBasePath).
