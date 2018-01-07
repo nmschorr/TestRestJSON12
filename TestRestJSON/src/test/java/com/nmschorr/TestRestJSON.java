@@ -6,6 +6,7 @@
 package com.nmschorr;
 
 import config.TestConfig;
+import config.EndPoint;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import  io.restassured.http.*;
@@ -13,65 +14,80 @@ import  io.restassured.response.Response;
 import static org.hamcrest.Matchers.*;
 import  io.restassured.specification.*;
 
-
 public  class TestRestJSON extends TestConfig {
-public static String jsonAsString;
+											public static String jsonAsString;
+											public static String newPeep =  "{\"/peeps/peepsId\":2}";
+												public static String postLoc = EndPoint.BLOB_ENDPOINT + "/peeps";
+									 
 
-	@Test
-	public void newtestDemo2()  {
-		String myData =  "{\n"  +  		"  \"userId\":333,\n"  +  
-				"  \"id\":3333,\n" +  
-				"  \"title\":\"mynewbook\"\n " +  "}";
-											//   String newendpoint = "/1/";
-
+		//------------------------------------- test 1 --------------------------------------
+	//@Test
+	public void blobTest1()  {
+		System.out.println("\n\n---------------Beginning blobTest1 --------------------\n\n");
+		
 		String responseStr =			
 				given().
-				log().all().
+				log().parameters().
 				spec(blobSpec).
 				when().
-				get("53998288-f328-11e7-8877-3d11de9ec1d3").asString();
+				get(EndPoint.BLOB_ENDPOINT).asString();
 
-		Response response =			
+		int  a = 0;             // for dev
+
+		//then().assertThat().body(containsString("nancy")).
+		//and().body(containsString("a")).
+	}
+
+			//------------------------------------- test 2 --------------------------------------
+	//@Test
+	public void blobTest2()  {
+		System.out.println("\n\n---------------Beginning blobTest2---------------------\n\n");
+		
+		Response response2 =			
 				given().
 				log().all().
 				spec(blobSpec).
 				when().
-				get("53998288-f328-11e7-8877-3d11de9ec1d3").
+				get(EndPoint.BLOB_ENDPOINT).
 				then().
 				contentType(ContentType.JSON).
 				extract().response();
 
-		Headers headers = response.getHeaders();
-		String contentType = response.getHeader("Content-Type");
-		System.out.println("\n contentType:   " + contentType);
-		int  a = 0;
-
-
-		//then().assertThat().body(containsString("nancy")).
-		//and().body(containsString("a")).
-		//and().body( containsString("id")).
-		//		extract().response();
-		//	System.out.println("response: " );	  
-		//		System.out.println(response.asString()); 
-
-		//	String responseBody = given().when().get().asString();
-
-		//	System.out.println("\n\n\n ---------responsebody: " );	  
-		//	System.out.println(responseBody);	 
+		Headers headers = response2.getHeaders();
+		String contentType = response2.getHeader("Content-Type");
+		System.out.println("\n\n contentType blobTest2:   " + contentType);
+		int  a = 1;  // for dev
 	}
 
+			//------------------------------------- test 3 --------------------------------------
 	//@Test
-	public void newtestDemo()  {
-		System.out.println("Beginning...");
+	public void blobTest3()  {
+		System.out.println("\n\n---------------Beginning blobTest3---------------------\n\n");
+		
 		given().log().all().
 		spec(blobSpec).
 		when().
-		get().
-		//get("/1/").
-		//when().get(EndPoint.SINGLE_ALBUM).
-		then().
-		log().all();		
+		get(EndPoint.BLOB_ENDPOINT).
+		then().log().all().
+		assertThat().
+		body(containsString("nancy"));
+		//log().all();		
 	}
-}
+	//------------------------------------- test 4 --------------------------------------
+	@Test
+	public void blobTest4()  {
+		System.out.println("\n\n---------------Beginning blobTest4---------------------\n\n");
+		System.out.println("\n\npostLoc: " + postLoc + "\n\n");
+		System.out.println("\n\n newPeep: " + newPeep + "\n\n");
+ 
+		 given().spec(blobSpec).
+		 body (newPeep).
+				    when().
+				    contentType (ContentType.JSON).
+				    post(postLoc);
+			System.out.println( postLoc);
+			boolean  a = false;  // for dev
+     } // test4
+}  // class
 
 

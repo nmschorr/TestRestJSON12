@@ -14,29 +14,28 @@ public class TestConfig {
 	
 	public static ResponseSpecification responseSpec;
 	public static ResponseSpecBuilder responseSpecBuilder;
+												//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3
+												// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 
 	@BeforeClass
 	public static void SetUp() {
 		RestAssured.proxy("localhost", 8888);	
-													//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3
-												// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 		String blobBase        = "https://jsonblob.com"; 
 		String blobBasePath = "/api/jsonBlob";
+
 		blobSpec = new RequestSpecBuilder().
 				setBaseUri(blobBase).
 				setBasePath(blobBasePath).
 				addHeader("ContentType", "application/json").
-				//    addHeader("ContentType", "application/json; charset=utf-8").
 				addHeader("Accept", "application/json").
 				build();
 	 
-		//RestAssured.requestSpecification = blobSpec;
-	
-	//TestConfig.SetUpAlbums();
-	TestConfig.SetUpResponse();
+			//RestAssured.requestSpecification = blobSpec;
+			//TestConfig.SetUpTypicode();
+		TestConfig.SetUpResponse();
 }
-	  // ----------------------------------------------------- Response: 
-	static void SetUpAlbums() {
+	  // ----------------------------------------------------- typicode.com: 
+	static void SetUpTypicode() {
 
 		typicodebuilder = new RequestSpecBuilder();
 		typicodebuilder.setBaseUri("http://jsonplaceholder.typicode.com");     
@@ -46,9 +45,9 @@ public class TestConfig {
 		typicodeSpec = typicodebuilder.build();
 		//RestAssured.requestSpecification = typicodeSpec;   // sets this for all tests
 }
+	  // ----------------------------------------------------- Response: 
 
 		static void SetUpResponse() {
-
 			responseSpec = new ResponseSpecBuilder().
 			    expectStatusCode(200).
 				build();
