@@ -16,6 +16,7 @@ import  io.restassured.http.*;
 import  io.restassured.response.Response;
 import static org.hamcrest.Matchers.*;
 import  io.restassured.specification.*;
+import com.github.fge.jsonpatch.*;
 
 public  class TestRestJSON extends TestConfig {
 											public static String jsonAsString;
@@ -45,25 +46,24 @@ public  class TestRestJSON extends TestConfig {
 	}
 
 			//------------------------------------- test 2 --------------------------------------
-	//@Test
+	@Test
 	public void blobTest2()  {
 		System.out.println("\n\n---------------Beginning blobTest2 Fancy GET---------------------\n\n");
 		
-		Response response2 =			
+	    String MOK_ENDPOINT = "/ff731071-8808-4855-91e8-954f2c8fd0d7/view";
+		Response responseFromJsonSite =			
 				given().
 				log().all().
-				spec(blobSpec).
+				spec(newSpec).
 				when().
-				get(EndPoint.BLOB_ENDPOINT).
-				then().
-				contentType(ContentType.JSON).
-				extract().response();
+				get(MOK_ENDPOINT);
+				
 
-		Headers headers = response2.getHeaders();
-		String contentType = response2.getHeader("Content-Type");
+		Headers headers = responseFromJsonSite.getHeaders();
+		String contentType = responseFromJsonSite.getHeader("Content-Type");
 		System.out.println("\n\n contentType blobTest2:   " + contentType);
-		System.out.println("here is body:     "  + response2.getBody().asString().toString()        );
-		int  a = 1;  // for dev
+		System.out.println("here is body:     "  + responseFromJsonSite.getBody().asString().toString()        );
+	//	int  a = 1;  // for dev
 	}
 
 			//------------------------------------- test 3 --------------------------------------
@@ -81,7 +81,7 @@ public  class TestRestJSON extends TestConfig {
 		//log().all();		
 	}
 	//------------------------------------- test 4 --------------------------------------
-	@Test
+	//@Test
 	public void blobTest4()  {
 
 			System.out.println("\n\n---------------Beginning blobTest4---------------------\n\n");
@@ -124,38 +124,40 @@ public  class TestRestJSON extends TestConfig {
 																	jsonAsMap.put("contactEmail", "x");
 																	jsonAsMap.put("description", "testing purpose");
 	
-		given().
-        spec(myjsonSpec).
-	    when().
-	    delete().
-	    then();
+																	//		given().
+																	//	        spec(blobSpec).
+																	//	        body(myString2).
+																	//		    when().
+																	//		  //  post().
+																	//		    then().
+																	//		    log().all();
 		
-		
-		given().
-	        spec(myjsonSpec).
-	        body(myString2).
-		    when().
-		    put().
-		    then();
+		//String repStr = "[   {\"replace\": \"/id\", \"value\": 5} ]";												    
 
-																    
+		given().
+        spec(blobSpec).
+  //      body().
+	    when().
+	//    put().
+	    then().
+	    log().all();
 																    														
-//			given().log().all().
-//	        accept(ContentType.JSON).
-//	        contentType(ContentType.JSON).
-//	        spec(blobSpec).
-//		 	body (myString7).
-//		    when().
-//			//put(EndPoint.BLOB_ENDPOINT);  //works!!!
-//		    put().
-//		    then().log().all().assertThat().statusCode(200)
-//		   ;  //   trying
+										//			given().log().all().
+										//	        accept(ContentType.JSON).
+										//	        contentType(ContentType.JSON).
+										//	        spec(blobSpec).
+										//		 	body (myString7).
+										//		    when().
+										//			//put(EndPoint.BLOB_ENDPOINT);  //works!!!
+										//		    put().
+										//		    then().log().all().assertThat().statusCode(200)
+										//		   ;  //   trying
 		 
 		 
 				boolean  b= false;  // for dev
 	 
 			//System.out.println( EndPoint.BLOB_ENDPOINT);
-			boolean  a = false;  // for dev
+		//	boolean  a = false;  // for dev
      } // test4
 }  // class
 

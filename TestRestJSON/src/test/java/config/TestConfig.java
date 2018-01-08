@@ -14,6 +14,7 @@ public class TestConfig {
 	public static RequestSpecification blobSpec;
 	public static RequestSpecification myjsonSpec;
 	public static RequestSpecBuilder myjsonSpecB;
+	public static RequestSpecification newSpec;
 
 	public static ResponseSpecification responseSpec;
 	public static ResponseSpecBuilder responseSpecBuilder;
@@ -28,20 +29,28 @@ public class TestConfig {
 		String blobBase        = "https://jsonblob.com"; 
 		String blobBasePath = "/api/jsonBlob/53998288-f328-11e7-8877-3d11de9ec1d3";   // + EndPoint.BLOB_ENDPOINT;
 
-		
-		//https://api.myjson.com/bins/bl3ht
-			myjsonSpec = new RequestSpecBuilder().
-			setBaseUri("http://api.myjson.com/bins").
-			setBasePath("/bl3ht").
+		String mokbase = "http://mockbin.org";
+		String mokbasepath = "/bin";                      //ff731071-8808-4855-91e8-954f2c8fd0d7/view";
+
+																	 // old : mockbin.org:8080/bin/ff731071-8808-4855-91e8-954f2c8fd0d7";
+																	//"https://www.jasonbase.com/things/")
+	    String MYBASE = mokbase;
+	    String MYBASEPATH = mokbasepath;
+	    													//https://api.myjson.com/bins/bl3ht
+	    													///  https://www.jasonbase.com/things/gzy2//        
+		newSpec = new RequestSpecBuilder().
+			setBaseUri(MYBASE).  													
+			setBasePath(MYBASEPATH).
 			setPort(80).
-			addHeader("Content-Type", "application/json").
+			//addHeader("Content-Type", "application/json").
 			addHeader("Accept", "application/json").
+			//addHeader("Accept", "text/html").
 		    build();
 
 		blobSpec = new RequestSpecBuilder().
 				setBaseUri(blobBase).
-				setBasePath(blobBasePath).
-				setPort(8080).
+				//setBasePath(blobBasePath).
+				setPort(80).
 				//addHeader("ContentType", "application/json").
 				addHeader("Content-Type", "application/json").
 				addHeader("Accept", "application/json").
