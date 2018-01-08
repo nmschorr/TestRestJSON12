@@ -1,5 +1,6 @@
 package config; 
 
+import config.EndPoint;
 import io.restassured.RestAssured;
 import  io.restassured.builder.RequestSpecBuilder;
 import  io.restassured.builder.ResponseSpecBuilder;
@@ -11,7 +12,9 @@ public class TestConfig {
 	public static RequestSpecBuilder typicodebuilder;
 	public static RequestSpecification typicodeSpec;
 	public static RequestSpecification blobSpec;
-	
+	public static RequestSpecification myjsonSpec;
+	public static RequestSpecBuilder myjsonSpecB;
+
 	public static ResponseSpecification responseSpec;
 	public static ResponseSpecBuilder responseSpecBuilder;
 												//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3
@@ -23,7 +26,17 @@ public class TestConfig {
 	public static void SetUp() {
 		RestAssured.proxy("localhost", 8888);	
 		String blobBase        = "https://jsonblob.com"; 
-		String blobBasePath = "/api/jsonBlob";
+		String blobBasePath = "/api/jsonBlob/53998288-f328-11e7-8877-3d11de9ec1d3";   // + EndPoint.BLOB_ENDPOINT;
+
+		
+		//https://api.myjson.com/bins/bl3ht
+			myjsonSpec = new RequestSpecBuilder().
+			setBaseUri("http://api.myjson.com/bins").
+			setBasePath("/bl3ht").
+			setPort(80).
+			addHeader("Content-Type", "application/json").
+			addHeader("Accept", "application/json").
+		    build();
 
 		blobSpec = new RequestSpecBuilder().
 				setBaseUri(blobBase).
@@ -32,15 +45,13 @@ public class TestConfig {
 				//addHeader("ContentType", "application/json").
 				addHeader("Content-Type", "application/json").
 				addHeader("Accept", "application/json").
-				//addHeader("X-jsonblob","5226571730043f8b22dadc20").
 				addHeader("X-jsonblob","53998288-f328-11e7-8877-3d11de9ec1d3").
 			    build();
-	//    String BLOB_ENDPOINT = "53998288-f328-11e7-8877-3d11de9ec1d3";
 	 
 		System.out.println(blobSpec.toString());
 			//RestAssured.requestSpecification = blobSpec;
 			//TestConfig.SetUpTypicode();
-		TestConfig.SetUpResponse();
+		//TestConfig.SetUpResponse();
 }
 	  // ----------------------------------------------------- typicode.com: 
 	static void SetUpTypicode() {

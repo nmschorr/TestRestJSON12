@@ -8,6 +8,7 @@ package com.nmschorr;
 import config.TestConfig;
 import config.EndPoint;
 import org.json.JSONObject;
+import java.util.*; 
 
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
@@ -21,11 +22,13 @@ public  class TestRestJSON extends TestConfig {
 											public static String newPeep =  "{\"id\":0}";
 										 public static String postLoc = EndPoint.BLOB_ENDPOINT;
 									 
- 
+
  		//------------------------------------- test 1 --------------------------------------
-	@Test
+	//@Test					
+										
 	public void blobTest1()  {
-		System.out.println("\n\n---------------Beginning blobTest1 --------------------\n\n");
+		System.out.println("\n\n---------------Beginning blobTest1 Simple GET --------------------\n\n");
+										 System.out.println("\n\n- --------------Fiddler must be running! -------------------- \n\n");
 		
 		String responseStr =			
 				given().
@@ -34,18 +37,17 @@ public  class TestRestJSON extends TestConfig {
 				when().
 				get(EndPoint.BLOB_ENDPOINT).asString();
 		
-		System.out.println(responseStr);
-
+		System.out.println("responseStr:  "   + responseStr);
 		int  a = 0;             // for dev
 
-		//then().assertThat().body(containsString("nancy")).
-		//and().body(containsString("a")).
+												//then().assertThat().body(containsString("nancy")).
+												//and().body(containsString("a")).
 	}
 
 			//------------------------------------- test 2 --------------------------------------
-	@Test
+	//@Test
 	public void blobTest2()  {
-		System.out.println("\n\n---------------Beginning blobTest2---------------------\n\n");
+		System.out.println("\n\n---------------Beginning blobTest2 Fancy GET---------------------\n\n");
 		
 		Response response2 =			
 				given().
@@ -82,34 +84,77 @@ public  class TestRestJSON extends TestConfig {
 	@Test
 	public void blobTest4()  {
 
-		
+			System.out.println("\n\n---------------Beginning blobTest4---------------------\n\n");
+			System.out.println("\n\n---------------Fiddler must be running! --------------------\n\n");
+
 		
 		String myString2 = "{\n" +
-                "  \"id\": 15,\n" +
+                "  \"id\": 1,\n" +
                 "  \"name\": \"MyNewGame5\",\n" +
                 "  \"releaseDate\": \"2017-12-07T11:49:25.755Z\",\n" +
                 "  \"reviewScore\": 45,\n" +
                 "  \"category\": \"Driving55\",\n" +
                 "  \"rating\": \"Mature5\"\n" +
+                "}" +  "{\n" +
+                "  \"id\": 2,\n" +
+                "  \"name\": \"changedagain55533\",\n" +
+                "  \"releaseDate\": \"2017-12-07T11:49:25.755Z\",\n" +
+                "  \"reviewScore\": 45,\n" +
+                "  \"category\": \"Driving55\",\n" +
+                "  \"rating\": \"Mature5\"\n" +
                 "}";
+	
+		String myStringP = "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"name\": \"patched\",\n" + "}";
 
+                
+                String myString7 = "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"name\": \"seven\",\n" +
+                "  \"releaseDate\": \"2017-12-07T11:49:25.755Z\",\n" +
+                "  \"reviewScore\": 45,\n" +
+                "  \"category\": \"Driving55\",\n" +
+                "  \"rating\": \"Mature5\"\n" +
+                "}";
+				 //System.out.println("\n  myString7: " + myStringBig + "\n\n");
+																	Map<String, Object>  jsonAsMap = new HashMap<>();
+																	jsonAsMap.put("name", "Test12");
+																	jsonAsMap.put("title", "Test127123");
+																	jsonAsMap.put("contactEmail", "x");
+																	jsonAsMap.put("description", "testing purpose");
+	
+		given().
+        spec(myjsonSpec).
+	    when().
+	    delete().
+	    then();
 		
-		System.out.println("\n\n---------------Beginning blobTest4---------------------\n\n");
-		System.out.println("\n\npostLoc: " + postLoc + "\n\n");
-		System.out.println("\n\n newPeep: " + newPeep + "\n\n");
-	       String		myString = new JSONObject()
-							.put("id", 92).toString();
-			boolean  b= false;  // for dev
+		
+		given().
+	        spec(myjsonSpec).
+	        body(myString2).
+		    when().
+		    put().
+		    then();
 
-		 given().spec(blobSpec).
-		 			body (myString).
-				    when().
-				//    put(EndPoint.BLOB_ENDPOINT);  //works!!!
-		      post(EndPoint.BLOB_ENDPOINT);  //works!!!
+																    
+																    														
+//			given().log().all().
+//	        accept(ContentType.JSON).
+//	        contentType(ContentType.JSON).
+//	        spec(blobSpec).
+//		 	body (myString7).
+//		    when().
+//			//put(EndPoint.BLOB_ENDPOINT);  //works!!!
+//		    put().
+//		    then().log().all().assertThat().statusCode(200)
+//		   ;  //   trying
 		 
 		 
-		 
-			System.out.println( postLoc);
+				boolean  b= false;  // for dev
+	 
+			//System.out.println( EndPoint.BLOB_ENDPOINT);
 			boolean  a = false;  // for dev
      } // test4
 }  // class
