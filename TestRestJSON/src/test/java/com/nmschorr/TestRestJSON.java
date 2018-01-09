@@ -1,90 +1,95 @@
 /* TestRestJSON by Nancy Schorr, 2016/2018
  Demonstrates use of apis to read a json formatted text file and store it as a JSON object for further manipulation.
- Also goes to url https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3 and reads the data and store it in various objects.
+ Also goes to url https://jsonmy.com/53998288-f328-11e7-8877-3d11de9ec1d3 and reads the data and store it in various objects.
  2018 : added rest assured.
  */
 package com.nmschorr;
 
 import config.TestConfig;
 import config.EndPoint;
-import org.json.JSONObject;
+							//import org.json.JSONObject;
 import java.util.*; 
 
-import org.junit.Test;
 import static io.restassured.RestAssured.*;
-import  io.restassured.http.*;
-import  io.restassured.response.Response;
 import static org.hamcrest.Matchers.*;
-import  io.restassured.specification.*;
-import com.github.fge.jsonpatch.*;
+import org.junit.Test;
+							//import  io.restassured.http.*;
+							//import  io.restassured.response.Response;
+							//import  io.restassured.specification.*;
+							//import com.github.fge.jsonpatch.*;
 
 public  class TestRestJSON extends TestConfig {
-											public static String jsonAsString;
-											public static String newPeep =  "{\"id\":0}";
-										 public static String postLoc = EndPoint.BLOB_ENDPOINT;
-									 
+		//public static String jsonAsString;
+	   public static String   myBasePath = "/movies";   //  
+	 
 
- 		//------------------------------------- test 1 --------------------------------------
-	//@Test					
-										
-	public void blobTest1()  {
-		System.out.println("\n\n---------------Beginning blobTest1 Simple GET --------------------\n\n");
-										 System.out.println("\n\n- --------------Fiddler must be running! -------------------- \n\n");
+ 		//------------------------------------- test 1 Get --------------------------------------
+	@Test														
+	public void myTest1()  {
+		System.out.println("\n\n---------------Beginning myTest1 Simple GET --------------------\n\n");
+		System.out.println("\n\n- --------------Fiddler must be running! -------------------- \n\n");
 		
 		String responseStr =			
-				given().
-				log().parameters().
-				spec(blobSpec).
-				when().
-				get(EndPoint.BLOB_ENDPOINT).asString();
+				given()
+					.log().headers()
+					.spec(mySpec)
+					.when()
+					.get(myBasePath).asString();
 		
 		System.out.println("responseStr:  "   + responseStr);
-		int  a = 0;             // for dev
+		//int  a = 0;             // for dev
 
 												//then().assertThat().body(containsString("nancy")).
 												//and().body(containsString("a")).
 	}
 
-			//------------------------------------- test 2 --------------------------------------
-	@Test
-	public void blobTest2()  {
-		System.out.println("\n\n---------------Beginning blobTest2 Fancy GET---------------------\n\n");
-		
-	    String MOK_ENDPOINT = "/ff731071-8808-4855-91e8-954f2c8fd0d7/view";
-		Response responseFromJsonSite =			
-				given().
-				log().all().
-				spec(newSpec).
-				when().
-				get(MOK_ENDPOINT);
-				
-
-		Headers headers = responseFromJsonSite.getHeaders();
-		String contentType = responseFromJsonSite.getHeader("Content-Type");
-		System.out.println("\n\n contentType blobTest2:   " + contentType);
-		System.out.println("here is body:     "  + responseFromJsonSite.getBody().asString().toString()        );
-	//	int  a = 1;  // for dev
-	}
-
-			//------------------------------------- test 3 --------------------------------------
+				//------------------------------------- test 2 --------------------------------------
 	//@Test
-	public void blobTest3()  {
-		System.out.println("\n\n---------------Beginning blobTest3---------------------\n\n");
+	public void myTest2()  {
+		System.out.println("\n\n---------------Beginning myTest2 Get One Record---------------------\n\n");
+	    String myBody2 = "/3";
+		String testString2 = "Inception";
+		System.out.println("\n\n------Testing Record:     "  +   myBody2  + "  " +  testString2 + "----------\n\n");
+	
+		given()
+		.log().all().
+		spec(mySpec)
+		.when() 
+		.get(myBody2)
+		//
+		.then()
+		.assertThat().body(containsString(testString2))
+		.log().all();
 		
-		given().log().all().
-		spec(blobSpec).
-		when().
-		get(EndPoint.BLOB_ENDPOINT).
-		then().log().all().
-		assertThat().
-		body(containsString("nancy"));
+		//assertThat().
+		//body(containsString("Inception"));
 		//log().all();		
 	}
+	//------------------------------------- test 3 --------------------------------------
+@Test
+public void myTest3()  {
+System.out.println("\n\n---------------Beginning myTest3  POST---------------------\n\n");
+
+String myBody3 =  "{\n \"id\": 7,\"name\": \"jsonserver55\", \"director\": \"nms5\",  \"rating\": 9.0 \n}";
+System.out.println("\n\n------Testing Record:     "  +   myBody3  + "  "+ "----------\n\n");
+
+////Response responseFromJsonSite =			
+		given()
+		.log().all()
+		.body(myBody3)
+		.spec(mySpec)
+		.when()
+		.post(myBasePath)
+		.then()
+		.log().all();
+//		
+//	int  a = 1;  // for dev
+}
 	//------------------------------------- test 4 --------------------------------------
 	//@Test
-	public void blobTest4()  {
+	public void myTest4()  {
 
-			System.out.println("\n\n---------------Beginning blobTest4---------------------\n\n");
+			System.out.println("\n\n---------------Beginning myTest4---------------------\n\n");
 			System.out.println("\n\n---------------Fiddler must be running! --------------------\n\n");
 
 		
@@ -123,19 +128,11 @@ public  class TestRestJSON extends TestConfig {
 																	jsonAsMap.put("title", "Test127123");
 																	jsonAsMap.put("contactEmail", "x");
 																	jsonAsMap.put("description", "testing purpose");
-	
-																	//		given().
-																	//	        spec(blobSpec).
-																	//	        body(myString2).
-																	//		    when().
-																	//		  //  post().
-																	//		    then().
-																	//		    log().all();
 		
 		//String repStr = "[   {\"replace\": \"/id\", \"value\": 5} ]";												    
 
 		given().
-        spec(blobSpec).
+        spec(mySpec).
   //      body().
 	    when().
 	//    put().
@@ -145,10 +142,10 @@ public  class TestRestJSON extends TestConfig {
 										//			given().log().all().
 										//	        accept(ContentType.JSON).
 										//	        contentType(ContentType.JSON).
-										//	        spec(blobSpec).
+										//	        spec(mySpec).
 										//		 	body (myString7).
 										//		    when().
-										//			//put(EndPoint.BLOB_ENDPOINT);  //works!!!
+										//			//put(EndPoint.my_ENDPOINT);  //works!!!
 										//		    put().
 										//		    then().log().all().assertThat().statusCode(200)
 										//		   ;  //   trying
@@ -156,7 +153,7 @@ public  class TestRestJSON extends TestConfig {
 		 
 				boolean  b= false;  // for dev
 	 
-			//System.out.println( EndPoint.BLOB_ENDPOINT);
+			//System.out.println( EndPoint.my_ENDPOINT);
 		//	boolean  a = false;  // for dev
      } // test4
 }  // class

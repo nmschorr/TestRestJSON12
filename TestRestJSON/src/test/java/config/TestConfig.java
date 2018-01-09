@@ -11,56 +11,38 @@ import org.junit.BeforeClass;
 public class TestConfig {
 	public static RequestSpecBuilder typicodebuilder;
 	public static RequestSpecification typicodeSpec;
-	public static RequestSpecification blobSpec;
-	public static RequestSpecification myjsonSpec;
-	public static RequestSpecBuilder myjsonSpecB;
-	public static RequestSpecification newSpec;
+	public static RequestSpecification mySpec;
 
 	public static ResponseSpecification responseSpec;
 	public static ResponseSpecBuilder responseSpecBuilder;
-												//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3
-												// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 
  
  	
 	@BeforeClass
 	public static void SetUp() {
 		RestAssured.proxy("localhost", 8888);	
-		String blobBase        = "https://jsonblob.com"; 
-		String blobBasePath = "/api/jsonBlob/53998288-f328-11e7-8877-3d11de9ec1d3";   // + EndPoint.BLOB_ENDPOINT;
+		
+		String   myBase        = "http://localhost"; 
+		//String   myBasePath = "/movies";   //  
+		String   emptyBasePath = "";   //  
+		String   postBasePath = "";   //  
+		Integer myPort         = 3000;
 
-		String mokbase = "http://mockbin.org";
-		String mokbasepath = "/bin";                      //ff731071-8808-4855-91e8-954f2c8fd0d7/view";
-
-																	 // old : mockbin.org:8080/bin/ff731071-8808-4855-91e8-954f2c8fd0d7";
-																	//"https://www.jasonbase.com/things/")
-	    String MYBASE = mokbase;
-	    String MYBASEPATH = mokbasepath;
-	    													//https://api.myjson.com/bins/bl3ht
-	    													///  https://www.jasonbase.com/things/gzy2//        
-		newSpec = new RequestSpecBuilder().
+ 		String MYBASE = myBase;
+	   // String MYBASEPATH = myBasePath;
+	    													    
+		mySpec = new RequestSpecBuilder().
 			setBaseUri(MYBASE).  													
-			setBasePath(MYBASEPATH).
-			setPort(80).
-			//addHeader("Content-Type", "application/json").
+		  //  setBasePath(MYBASEPATH).
+			setPort(myPort).
 			addHeader("Accept", "application/json").
-			//addHeader("Accept", "text/html").
+			addHeader("Content-Type", "application/json").
 		    build();
-
-		blobSpec = new RequestSpecBuilder().
-				setBaseUri(blobBase).
-				//setBasePath(blobBasePath).
-				setPort(80).
-				//addHeader("ContentType", "application/json").
-				addHeader("Content-Type", "application/json").
-				addHeader("Accept", "application/json").
-				addHeader("X-jsonblob","53998288-f328-11e7-8877-3d11de9ec1d3").
-			    build();
 	 
-		System.out.println(blobSpec.toString());
-			//RestAssured.requestSpecification = blobSpec;
-			//TestConfig.SetUpTypicode();
-		//TestConfig.SetUpResponse();
+		System.out.println("\n\n-----------------Must run with Fidder!---------------------------\n");
+		System.out.println(mySpec.toString());
+			//RestAssured.requestSpecification = mySpec;
+		TestConfig.SetUpResponse();
 }
 	  // ----------------------------------------------------- typicode.com: 
 	static void SetUpTypicode() {
@@ -83,3 +65,13 @@ public class TestConfig {
 		RestAssured.responseSpecification = responseSpec;    // sets this for all tests
 	}
 }
+
+
+// old : mockbin.org:8080/bin/ff731071-8808-4855-91e8-954f2c8fd0d7";
+//https://api.myjson.com/bins/bl3ht
+///  https://www.jasonbase.com/things/gzy2//        
+//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3  //ff731071-8808-4855-91e8-954f2c8fd0d7/view
+// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
+
+
+
