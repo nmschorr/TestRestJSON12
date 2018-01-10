@@ -6,6 +6,9 @@ import  io.restassured.builder.RequestSpecBuilder;
 import  io.restassured.builder.ResponseSpecBuilder;
 import  io.restassured.specification.RequestSpecification;
 import  io.restassured.specification.ResponseSpecification;
+
+import java.util.ArrayList;
+
 import org.junit.BeforeClass;
 
 public class TestConfig {
@@ -42,6 +45,14 @@ public class TestConfig {
 		System.out.println(mySpec.toString());
 			//RestAssured.requestSpecification = mySpec;  // uncomment to set true for all tests
 		TestConfig.SetUpResponse();
+		ArrayList<Integer> testList = new ArrayList<Integer>();
+		int a[] = {1,2,3,4};
+		
+	    for (int b = 0; b < a.length; b++) {
+		     testList.add(a[b]); }
+        boolean xx = testList.contains(1);
+		int xxx = 1;
+
 }
 	  // ----------------------------------------------------- typicode.com: 
 	static void SetUpTypicode() {

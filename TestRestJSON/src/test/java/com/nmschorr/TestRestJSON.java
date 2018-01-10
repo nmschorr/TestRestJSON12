@@ -13,6 +13,9 @@ import config.EndPoint;
 import org.json.JSONObject;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+
+import java.util.*;
+
 import org.junit.Test;
 //import  io.restassured.http.*;
 //import com.github.fge.jsonpatch.*;
@@ -24,7 +27,7 @@ public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
 	public static String begLine = "\n\n---------------Beginning " ;
 	public static String endLine = "  --------------------\n\n" ;
-
+	
 	//------------------------------------- test 1 Get --------------------------------------
 	@Test														
 	public void myTest1()  {
