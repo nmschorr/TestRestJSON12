@@ -13,7 +13,8 @@ public class TestConfig {
 	public static RequestSpecification typicodeSpec;
 	public static RequestSpecification mySpec;
 
-	public static ResponseSpecification responseSpec;
+	public static ResponseSpecification responseSpecGet;
+	public static ResponseSpecification responseSpecPost;
 	public static ResponseSpecBuilder responseSpecBuilder;
 
  
@@ -22,18 +23,16 @@ public class TestConfig {
 	public static void SetUp() {
 		RestAssured.proxy("localhost", 8888);	
 		
-		String   myBase        = "http://localhost"; 
-		//String   myBasePath = "/movies";   //  
-		String   emptyBasePath = "";   //  
-		String   postBasePath = "";   //  
+		String   myBase        = "http://localhost:3000"; 
+		String   myBasePath = "/movies";   //  
 		Integer myPort         = 3000;
 
  		String MYBASE = myBase;
-	   // String MYBASEPATH = myBasePath;
+	    String MYBASEPATH = myBasePath;
 	    													    
 		mySpec = new RequestSpecBuilder().
 			setBaseUri(MYBASE).  													
-		  //  setBasePath(MYBASEPATH).
+		    setBasePath(MYBASEPATH).
 			setPort(myPort).
 			addHeader("Accept", "application/json").
 			addHeader("Content-Type", "application/json").
@@ -41,7 +40,7 @@ public class TestConfig {
 	 
 		System.out.println("\n\n-----------------Must run with Fidder!---------------------------\n");
 		System.out.println(mySpec.toString());
-			//RestAssured.requestSpecification = mySpec;
+			//RestAssured.requestSpecification = mySpec;  // uncomment to set true for all tests
 		TestConfig.SetUpResponse();
 }
 	  // ----------------------------------------------------- typicode.com: 
@@ -58,11 +57,15 @@ public class TestConfig {
 	  // ----------------------------------------------------- Response: 
 
 		static void SetUpResponse() {
-			responseSpec = new ResponseSpecBuilder().
-			    expectStatusCode(200).
-				build();
+			responseSpecGet = new ResponseSpecBuilder()
+			    .expectStatusCode(200)
+				.build();
+			
+			responseSpecPost = new ResponseSpecBuilder()
+				    .expectStatusCode(201)
+					.build();
 
-		RestAssured.responseSpecification = responseSpec;    // sets this for all tests
+		//RestAssured.responseSpecification = responseSpec;    // sets this for all tests
 	}
 }
 
