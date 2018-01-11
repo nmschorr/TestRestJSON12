@@ -6,19 +6,12 @@ import  io.restassured.builder.RequestSpecBuilder;
 import  io.restassured.builder.ResponseSpecBuilder;
 import  io.restassured.specification.RequestSpecification;
 import  io.restassured.specification.ResponseSpecification;
-import java.util.ArrayList;
 import org.junit.BeforeClass;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.IntStream;
 	
 	
-	
 public class TestConfig {
-	//public int[] myTests = {  1, 2, 3, 4 };  // edit this list
-	public int[] myTests = { 1, 4 };  // edit this list
-
-	
+	public int[] myTests = EndPoint.myTestList;     // edit list in EndPoint.java file	
 	public static RequestSpecBuilder typicodebuilder;
 	public static RequestSpecification typicodeSpec;
 	public static RequestSpecification mySpec;
@@ -35,13 +28,17 @@ public class TestConfig {
 		Integer myPort         = 3000;        // for JSONserver
  		String MYBASE = myBase;
 	    String MYBASEPATH = myBasePath;
+	    String HEADERcon1 = "Content-Type";
+	    String HEADERcon2 = "application/json";
+	    String HEADERacc1 = "Accept";
+	    String HEADERacc2 = "application/json";
 	    													    
 		mySpec = new RequestSpecBuilder()
 			.setBaseUri(MYBASE) 													
 		    .setBasePath(MYBASEPATH)
 			.setPort(myPort)
-			.addHeader("Accept", "application/json")
-			.addHeader("Content-Type", "application/json")
+			.addHeader(HEADERcon1, HEADERcon2)
+			.addHeader(HEADERacc1, HEADERacc2)
 		    .build();
 	 
 		System.out.println("\n-----------------Must run with Fidder!---------------------------\n");

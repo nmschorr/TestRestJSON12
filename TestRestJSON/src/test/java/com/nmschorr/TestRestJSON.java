@@ -6,13 +6,13 @@
  */
 package com.nmschorr;
 
+import static  java.lang.System.out;
 import config.TestConfig;
 import io.restassured.response.ValidatableResponse;
 import config.EndPoint;
 import org.json.JSONObject;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
-import java.util.stream.IntStream;
 import org.junit.Test;
 //import com.github.fge.jsonpatch.*;
 
@@ -20,16 +20,18 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
-	public static String begLine = "\n---------------Beginning " ;
-	public static String endLine = "  --------------------\n" ;
-	
+	public static String BOL = "\n--------------- " ;
+	public static String EOLn = "  --------------------\n" ;
+
 	//------------------------------------- test 1 Get --------------------------------------
 	@Test														
 	public void myTest1()  {
-	  
-      if  (mycheck(myTests, 1))    {              // 1 = this test number
-        System.out.println(begLine + "Fiddler must be running! " + endLine);	 	
-			System.out.println(begLine + "myTest1 Simple GET " + endLine);
+		int testNumber = 1;
+		String testName = "GET";
+
+		if  (mycheck(myTests, testNumber))    {              // 1 = this test number
+			out.println(BOL + "Fiddler must be running! " + EOLn);	 	
+			printEndLine(testNumber,"begin", testName);
 
 			ValidatableResponse validatableResponse =			
 					given()
@@ -45,25 +47,26 @@ public  class TestRestJSON extends TestConfig {
 			//String id = validatableResponse.extract().body().jsonPath().get("id").toString();
 			String movieNamesList = validatableResponse.extract().body().jsonPath().get("name").toString();
 			//Headers h= validatableResponse.extract().headers();
-		//	String statusCode =  validatableResponse.extract().statusLine();
+			//	String statusCode =  validatableResponse.extract().statusLine();
 
 			//    assertTrue(statusCode, containsString("200"));
 			System.out.println("Test one movie names list:  " + movieNamesList);
-			System.out.println(endLine + "end Test 1" + endLine);
-      }	
-      else {
-			System.out.println(endLine + "skipped Test 1" + endLine);
-      }
+			printEndLine(testNumber,"end",testName);
+		}	
+		else {
+			printEndLine(testNumber,"skip",testName);
+		}
 	}
-		
+
 	//------------------------------------- test 2 Get Record --------------------------------------
 	@Test
 	public void myTest2()  {
-		if  (mycheck(myTests, 2))    {              // 2 = this test number
-			System.out.println(begLine + "myTest2 Get One Record" + endLine);
+		int testNumber = 2;
+		String testName = "GET2";
+		if  (mycheck(myTests, testNumber))    {              // 2 = this test number
+			printEndLine(testNumber,"begin", testName);
 			String selectedRecord = "/3";
 			String selectedTestString = "Inception";
-			System.out.println("\n\n------Testing Record:     "  +   selectedRecord  + "  " +  selectedTestString + "----------\n\n");
 
 			given()
 			.log().all()
@@ -74,18 +77,19 @@ public  class TestRestJSON extends TestConfig {
 			.spec(responseSpecGet)
 			.assertThat().body(containsString(selectedTestString))
 			.log().all();
-			System.out.println(endLine + "end Test 2" + endLine);
+			printEndLine(testNumber,"end",testName);
 		}	
 		else {
-			System.out.println(endLine + "skipped Test 2" + endLine);
+			printEndLine(testNumber,"skip",testName);
 		}
 	}
 	//------------------------------------- test 3 POST --------------------------------------
 	@Test
 	public void myTest3()  {
-		if  (mycheck(myTests, 3))    {              // 3 = this test number
-			System.out.println(begLine + "Beginning myTest3 POST" + endLine);
-			// String myBody3 =  "{   \"name\": \"jsonserver55\",  \"director\": \"nms5\",  \"rating\": 9.0 }";// this string works for Post
+		int testNumber =3;
+		String testName = "POST";
+	if  (mycheck(myTests, testNumber))    {              // 3 = this test number
+			printEndLine(testNumber,"begin",testName);
 
 			JSONObject obj = new JSONObject();  //no need for id
 			obj.put("rating","rating12");
@@ -102,24 +106,22 @@ public  class TestRestJSON extends TestConfig {
 			.then()
 			.spec(responseSpecPost)
 			.log().all();		
-			System.out.println(endLine + "end Test 3" + endLine);
-			String selectedRecord = "/3";
+			printEndLine(testNumber,"end",testName);
 		}	
 		else {
-			System.out.println(endLine + "skipped Test 3" + endLine);
+			printEndLine(testNumber,"skip",testName);
 		}
 	}
+
 	//------------------------------------- test 4 --------------------------------------
-	
 	@Test
 	public void myTest4()  {
-		int a = 1;
-		
-		if  (mycheck(myTests,4))    {              // 4 = this test number
-			System.out.println(begLine + "mycheck worked " + endLine);
-		}
-			System.out.println(begLine + "Beginning myTest4 PATCH record " + endLine);
-			System.out.println(begLine + "Fiddler must be running! " + endLine);
+		int testNumber = 4;
+		String testName = "PATCH";
+
+		if  (mycheck(myTests,testNumber))    {              // 4 = this test number
+			printEndLine(testNumber,"begin", testName);
+			System.out.println(BOL + "Fiddler must be running! " + EOLn);
 			String recNumber = "/4";
 			String myPatch =   " {  \"rating\": 44 }"  ;     // very simple - just field name to replace and value
 
@@ -131,14 +133,60 @@ public  class TestRestJSON extends TestConfig {
 			.then()
 			.spec(responseSpecGet)       // 200
 			.log().all();			
-			
-			System.out.println(endLine + "end Test 4" + endLine);
+
+			printEndLine(testNumber,"end",testName);
+		}
+		else {
+			printEndLine(testNumber,"skip",testName);
+		}
+	}  // test 4
+	//------------------------------------- test 5 PUT --------------------------------------
+	@Test
+	public void myTest5()  {
+		int testNumber = 5;
+		String testName = "PUT";
+		if  (mycheck(myTests,testNumber))    {              // 5 = this test number
+			printEndLine(testNumber,"begin", testName);
+			System.out.println(BOL + "Fiddler must be running! " + EOLn);
+			String recNumber = "/12";
+		//	String myPUT =  "{   \"name\": \"Mission Impossible\",  \"director\": \"Tom Cruise\",  \"rating\": 9.0 }";    // this string works for Post
+	
+			JSONObject myPUT = new JSONObject();  //no need for id, add to object in reverse order
+			myPUT.put("rating","9");
+			myPUT.put("director","Tom Cruise");
+			myPUT.put("name","Mission Impossible 2");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
+			System.out.println("\n\n------ex obj Record:    \n "  +   myPUT.toString()  + "  "+ "----------\n\n");
+
+			given()
+			.spec(mySpec)
+			.body(myPUT.toString())
+			.when()
+			.put(recNumber)    
+			.then()
+			.spec(responseSpecGet)       // 200
+			.log().all();			
+
+			printEndLine(testNumber,"end",testName);
 
 		}	
-//		else {
-//			System.out.println(endLine + "skipped Test 4" + endLine);
-//		}
-//	}  // test 4
-}  // class
+		else {
+			printEndLine(testNumber,"skip",testName);
+		}
+	}  // test 5
+
+	public void printEndLine(int tnbr, String ttype, String tname) {
+
+		switch (ttype) {
+			case "end":  out.println(BOL + "End Test " + tnbr + ": "  + tname + EOLn);
+				break;
+			case "begin":  out.println(BOL + "Begin Test " + tnbr + ": "  + tname +  EOLn);
+				break;
+			case "skip":  out.println(EOLn + "Skipped Test " + tnbr + ": "  + tname + EOLn);
+				break;
+		default:  
+				break;
+		}
+	}
+}        // class
 
 
