@@ -7,116 +7,143 @@
 package com.nmschorr;
 
 import config.TestConfig;
-import io.restassured.http.Headers;
+//import io.restassured.http.Headers;
 import io.restassured.response.ValidatableResponse;
 import config.EndPoint;
 import org.json.JSONObject;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-import java.util.*;
-
+//import java.util.List;
+//import java.util.Arrays;
+import java.util.stream.IntStream;
 import org.junit.Test;
-//import  io.restassured.http.*;
 //import com.github.fge.jsonpatch.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.*;
+//import static org.hamcrest.CoreMatchers.*;
 
 public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
-	public static String begLine = "\n\n---------------Beginning " ;
-	public static String endLine = "  --------------------\n\n" ;
+	public static String begLine = "\n---------------Beginning " ;
+	public static String endLine = "  --------------------\n" ;
 	
 	//------------------------------------- test 1 Get --------------------------------------
+	
+	
 	@Test														
 	public void myTest1()  {
-		System.out.println(begLine + "myTest1 Simple GET " + endLine);
-		System.out.println(begLine + "Fiddler must be running! " + endLine);
+	  
+      if  (mycheck(myTests, 1))    {              // 1 = this test number
+        System.out.println(begLine + "Fiddler must be running! " + endLine);	 	
+			System.out.println(begLine + "myTest1 Simple GET " + endLine);
 
-		ValidatableResponse validatableResponse =			
-				given()
-				.log()
-				.headers()
-				.spec(mySpec)
-				.when()
-		        .get()
-		        .then()
-				.spec(responseSpecGet)
-		        .log().all();
-		
-		validatableResponse.assertThat().statusCode(200);
-	    String id = validatableResponse.extract().body().jsonPath().get("id").toString();
-	    String movieNamesList = validatableResponse.extract().body().jsonPath().get("name").toString();
-	    Headers h= validatableResponse.extract().headers();
-	    String statusCode =  validatableResponse.extract().statusLine();
+			ValidatableResponse validatableResponse =			
+					given()
+					.log().all()
+					.spec(mySpec)
+					.when()
+					.get()
+					.then()
+					.spec(responseSpecGet)
+					.log().all();
 
-	//    assertTrue(statusCode, containsString("200"));
-	 	System.out.println("Test one movie names list:  "   + movieNamesList);		
-		System.out.println(endLine + "end Test 1" + endLine);
+			validatableResponse.assertThat().statusCode(200);
+			//String id = validatableResponse.extract().body().jsonPath().get("id").toString();
+			String movieNamesList = validatableResponse.extract().body().jsonPath().get("name").toString();
+			//Headers h= validatableResponse.extract().headers();
+		//	String statusCode =  validatableResponse.extract().statusLine();
+
+			//    assertTrue(statusCode, containsString("200"));
+			System.out.println("Test one movie names list:  " + movieNamesList);
+			System.out.println(endLine + "end Test 1" + endLine);
+      }	
+      else {
+			System.out.println(endLine + "skipped Test 1" + endLine);
+      }
 	}
-
-	//------------------------------------- test 2 --------------------------------------
+		
+	//------------------------------------- test 2 Get Record --------------------------------------
 	@Test
 	public void myTest2()  {
-		System.out.println(begLine + "myTest2 Get One Record" + endLine);
-		String myBody2 = "/3";
-		String testString2 = "Inception";
-		System.out.println("\n\n------Testing Record:     "  +   myBody2  + "  " +  testString2 + "----------\n\n");
+		if  (mycheck(myTests, 2))    {              // 2 = this test number
+			System.out.println(begLine + "myTest2 Get One Record" + endLine);
+			String selectedTest = "/3";
+			String selectedTestString = "Inception";
+			System.out.println("\n\n------Testing Record:     "  +   selectedTest  + "  " +  selectedTestString + "----------\n\n");
 
-		given()
-		.log().all()
-		.spec(mySpec)
-		.when() 
-		.get(myBody2)
-		.then()
-		.spec(responseSpecGet)
-		.assertThat().body(containsString(testString2))
-		.log().all();
+			given()
+			.log().all()
+			.spec(mySpec)
+			.when() 
+			.get(selectedTest)
+			.then()
+			.spec(responseSpecGet)
+			.assertThat().body(containsString(selectedTestString))
+			.log().all();
+			System.out.println(endLine + "end Test 2" + endLine);
+		}	
+		else {
+			System.out.println(endLine + "skipped Test 2" + endLine);
+		}
 	}
-	//------------------------------------- test 3 --------------------------------------
+	//------------------------------------- test 3 POST --------------------------------------
 	@Test
 	public void myTest3()  {
-		System.out.println(begLine + "Beginning myTest3 POST" + endLine);
-		// String myBody3 =  "{   \"name\": \"jsonserver55\",  \"director\": \"nms5\",  \"rating\": 9.0 }";// this string works for Post
+		if  (mycheck(myTests, 3))    {              // 3 = this test number
+			System.out.println(begLine + "Beginning myTest3 POST" + endLine);
+			// String myBody3 =  "{   \"name\": \"jsonserver55\",  \"director\": \"nms5\",  \"rating\": 9.0 }";// this string works for Post
 
-		JSONObject obj = new JSONObject();  //no need for id
-		obj.put("rating","rating12");
-		obj.put("director","director12");
-		obj.put("name","new12");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
-		System.out.println("\n\n------ex obj Record:    \n "  +   obj.toString()  + "  "+ "----------\n\n");
+			JSONObject obj = new JSONObject();  //no need for id
+			obj.put("rating","rating12");
+			obj.put("director","director12");
+			obj.put("name","new12");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
+			System.out.println("\n\n------ex obj Record:    \n "  +   obj.toString()  + "  "+ "----------\n\n");
 
-		given()
-		.log().all()
-		.spec(mySpec)
-		.body(obj.toString())     // all specs must be before body!
-		.when()
-		.post()
-		.then()
-		.spec(responseSpecPost)
-		.log().all();		
+			given()
+			.log().everything()
+			.spec(mySpec)
+			.body(obj.toString())     // all specs must be before body!
+			.when()
+			.post()
+			.then()
+			.spec(responseSpecPost)
+			.log().all();		
+			System.out.println(endLine + "end Test 3" + endLine);
+		}	
+		else {
+			System.out.println(endLine + "skipped Test 3" + endLine);
+		}
 	}
 	//------------------------------------- test 4 --------------------------------------
 	//@Test
 	public void myTest4()  {
-		System.out.println(begLine + "Beginning myTest4" + endLine);
-		System.out.println(begLine + "Fiddler must be running! " + endLine);
-		// 																	Map<String, Object>  jsonAsMap = new HashMap<>();
-		//																	jsonAsMap.put("name", "Test12");
-		//																	jsonAsMap.put("title", "Test127123");
-		//																	jsonAsMap.put("contactEmail", "x");
-		//																	jsonAsMap.put("description", "testing purpose");
+		if  (mycheck(myTests,4))    {              // 4 = this test number
+			System.out.println(begLine + "Beginning myTest4" + endLine);
+			System.out.println(begLine + "Fiddler must be running! " + endLine);
+			// 																	Map<String, Object>  jsonAsMap = new HashMap<>();
+			//																	jsonAsMap.put("name", "Test12");
+			//																	jsonAsMap.put("title", "Test127123");
+			//																	jsonAsMap.put("contactEmail", "x");
+			//																	jsonAsMap.put("description", "testing purpose");
 
-		//String repStr = "[   {\"replace\": \"/id\", \"value\": 5} ]";												    
-		given()
-		.spec(mySpec)
-		//      .body()
-		.when()
-		//    .put().
-		.then()
-		.spec(responseSpecPost)
-		.log().all();															    														
-	} // test4
+			String repStr = "[   {\"replace\": \"/rating\", \"value\": 7} ]";			
+			String recNumber = "/3";
+			
+			given()
+			.spec(mySpec)
+			.body(repStr)
+			.when()
+			.post(recNumber)    
+			.then()
+			.spec(responseSpecPost)
+			.log().all();															    														
+			System.out.println(endLine + "end Test 4" + endLine);
+		}	
+		else {
+			System.out.println(endLine + "skipped Test 4" + endLine);
+		}
+	}  // test 4
 }  // class
 
 

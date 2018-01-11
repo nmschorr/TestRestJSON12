@@ -6,12 +6,18 @@ import  io.restassured.builder.RequestSpecBuilder;
 import  io.restassured.builder.ResponseSpecBuilder;
 import  io.restassured.specification.RequestSpecification;
 import  io.restassured.specification.ResponseSpecification;
-
 import java.util.ArrayList;
-
 import org.junit.BeforeClass;
-
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+	
+	
+	
 public class TestConfig {
+	public int[] myTests = {  1, 2, 3, 4 };  // edit this list
+	
+	
 	public static RequestSpecBuilder typicodebuilder;
 	public static RequestSpecification typicodeSpec;
 	public static RequestSpecification mySpec;
@@ -19,42 +25,30 @@ public class TestConfig {
 	public static ResponseSpecification responseSpecGet;
 	public static ResponseSpecification responseSpecPost;
 	public static ResponseSpecBuilder responseSpecBuilder;
-
- 
- 	
+	
 	@BeforeClass
 	public static void SetUp() {
-		RestAssured.proxy("localhost", 8888);	
-		
+        RestAssured.proxy("localhost", 8888);	  // for fiddler
 		String   myBase        = "http://localhost:3000"; 
 		String   myBasePath = "/movies";   //  
-		Integer myPort         = 3000;
-
+		Integer myPort         = 3000;        // for JSONserver
  		String MYBASE = myBase;
 	    String MYBASEPATH = myBasePath;
 	    													    
-		mySpec = new RequestSpecBuilder().
-			setBaseUri(MYBASE).  													
-		    setBasePath(MYBASEPATH).
-			setPort(myPort).
-			addHeader("Accept", "application/json").
-			addHeader("Content-Type", "application/json").
-		    build();
+		mySpec = new RequestSpecBuilder()
+			.setBaseUri(MYBASE) 													
+		    .setBasePath(MYBASEPATH)
+			.setPort(myPort)
+			.addHeader("Accept", "application/json")
+			.addHeader("Content-Type", "application/json")
+		    .build();
 	 
-		System.out.println("\n\n-----------------Must run with Fidder!---------------------------\n");
-		System.out.println(mySpec.toString());
+		System.out.println("\n-----------------Must run with Fidder!---------------------------\n");
 			//RestAssured.requestSpecification = mySpec;  // uncomment to set true for all tests
-		TestConfig.SetUpResponse();
-		ArrayList<Integer> testList = new ArrayList<Integer>();
-		int a[] = {1,2,3,4};
-		
-	    for (int b = 0; b < a.length; b++) {
-		     testList.add(a[b]); }
-        boolean xx = testList.contains(1);
-		int xxx = 1;
-
+		TestConfig.SetUpResponse();		
 }
 	  // ----------------------------------------------------- typicode.com: 
+	
 	static void SetUpTypicode() {
 
 		typicodebuilder = new RequestSpecBuilder();
@@ -67,25 +61,24 @@ public class TestConfig {
 }
 	  // ----------------------------------------------------- Response: 
 
-		static void SetUpResponse() {
-			responseSpecGet = new ResponseSpecBuilder()
-			    .expectStatusCode(200)
+	static void SetUpResponse() {
+		responseSpecGet = new ResponseSpecBuilder()
+				.expectStatusCode(200)
 				.build();
-			
-			responseSpecPost = new ResponseSpecBuilder()
-				    .expectStatusCode(201)
-					.build();
+
+		responseSpecPost = new ResponseSpecBuilder()
+				.expectStatusCode(201)
+				.build();
 
 		//RestAssured.responseSpecification = responseSpec;    // sets this for all tests
 	}
+	  // ----------------------------------------------------- Response: 
+
+	public static boolean mycheck(int[] myTestList, int tOne)  {
+		boolean runThisTest2 = IntStream.of(myTestList).anyMatch(x -> x == tOne);       
+		return runThisTest2;
+	} 
 }
-
-
-// old : mockbin.org:8080/bin/ff731071-8808-4855-91e8-954f2c8fd0d7";
-//https://api.myjson.com/bins/bl3ht
-///  https://www.jasonbase.com/things/gzy2//        
-//https://jsonblob.com/53998288-f328-11e7-8877-3d11de9ec1d3  //ff731071-8808-4855-91e8-954f2c8fd0d7/view
-// other :  "/d14860ba-f2a0-11e7-8877-13767a00f47a";
 
 
 
