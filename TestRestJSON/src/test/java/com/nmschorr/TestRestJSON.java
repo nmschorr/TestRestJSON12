@@ -3,20 +3,19 @@
  Goes to url  localhost:3000  and reads the data and store it in various objects running with JSONserver and Node.js.
  2018 : added rest assured.  
  Note to self: do log first, then spec, then the rest in each section.
+ see https://github.com/typicode/json-server/blob/master/README.md for usage
  */
 package com.nmschorr;
 
 import static  java.lang.System.out;
-import config.TestConfig;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;import config.TestConfig;
+import static org.hamcrest.CoreMatchers.containsString;
 import io.restassured.response.ValidatableResponse;
 import config.EndPoint;
 import org.json.JSONObject;
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
 import org.junit.Test;
-//import com.github.fge.jsonpatch.*;
 
-import static org.hamcrest.CoreMatchers.containsString;
 
 public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
@@ -141,6 +140,7 @@ public  class TestRestJSON extends TestConfig {
 		}
 	}  // test 4
 	//------------------------------------- test 5 PUT --------------------------------------
+	//   this will replace an entire record
 	@Test
 	public void myTest5()  {
 		int testNumber = 5;
@@ -149,12 +149,12 @@ public  class TestRestJSON extends TestConfig {
 			printEndLine(testNumber,"begin", testName);
 			System.out.println(BOL + "Fiddler must be running! " + EOLn);
 			String recNumber = "/12";
-		//	String myPUT =  "{   \"name\": \"Mission Impossible\",  \"director\": \"Tom Cruise\",  \"rating\": 9.0 }";    // this string works for Post
+				//	String myPUT =  "{   \"name\": \"Mission Impossible\",  \"director\": \"Tom Cruise\",  \"rating\": 9.0 }";    // this string works for Post
 	
 			JSONObject myPUT = new JSONObject();  //no need for id, add to object in reverse order
-			myPUT.put("rating","9");
-			myPUT.put("director","Tom Cruise");
-			myPUT.put("name","Mission Impossible 2");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
+			myPUT.put("rating","93");
+			myPUT.put("director","Tom Cruise3");
+			myPUT.put("name","Mission Impossible 3");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
 			System.out.println("\n\n------ex obj Record:    \n "  +   myPUT.toString()  + "  "+ "----------\n\n");
 
 			given()
@@ -167,13 +167,54 @@ public  class TestRestJSON extends TestConfig {
 			.log().all();			
 
 			printEndLine(testNumber,"end",testName);
-
 		}	
 		else {
 			printEndLine(testNumber,"skip",testName);
 		}
 	}  // test 5
 
+	//------------------------------------- test 6 DELETE --------------------------------------
+	//   this will replace an entire record
+	@Test
+	public void myTest6()  {
+		int testNumber = 6;
+		String testName = "DELETE";
+		if  (mycheck(myTests,testNumber))    {              // 6 = this test number
+			printEndLine(testNumber,"begin", testName);
+			System.out.println(BOL + "Fiddler must be running! " + EOLn);
+			String recNumber = "/16";
+	
+			given()
+			.spec(mySpec)
+			.when()
+			.delete(recNumber)    
+			.then()
+			.spec(responseSpecGet)       // 200
+			.log().all();			
+
+			printEndLine(testNumber,"end",testName);
+		}	
+		else {
+			printEndLine(testNumber,"skip",testName);
+		}
+	}  // test 6	
+	
+	
+	//------------------------------------- test 99  --------------------------------------
+	@Test
+	public void myTest7() {
+		out.println("in print records");
+		given()
+	//	.log().all()
+		.spec(mySpec)
+		.when()
+		.get()                                         // this will get all records
+		.then()
+		.spec(responseSpecGet)
+		.log().body();                                  // prints records only, no headers, etc.
+		out.println("done with print records");
+	}
+	
 	public void printEndLine(int tnbr, String ttype, String tname) {
 
 		switch (ttype) {
