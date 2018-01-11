@@ -15,8 +15,9 @@ import java.util.stream.IntStream;
 	
 	
 public class TestConfig {
-	public int[] myTests = {  1, 2, 3, 4 };  // edit this list
-	
+	//public int[] myTests = {  1, 2, 3, 4 };  // edit this list
+	public int[] myTests = { 1, 4 };  // edit this list
+
 	
 	public static RequestSpecBuilder typicodebuilder;
 	public static RequestSpecification typicodeSpec;
@@ -74,9 +75,9 @@ public class TestConfig {
 	}
 	  // ----------------------------------------------------- Response: 
 
-	public static boolean mycheck(int[] myTestList, int tOne)  {
-		boolean runThisTest2 = IntStream.of(myTestList).anyMatch(x -> x == tOne);       
-		return runThisTest2;
+	public static boolean mycheck(int[] myTestListLoc, int tOne)  {
+		boolean runThisTestVar = IntStream.of(myTestListLoc).anyMatch(x -> x == tOne);       
+		return runThisTestVar;
 	} 
 }
 

@@ -7,21 +7,16 @@
 package com.nmschorr;
 
 import config.TestConfig;
-//import io.restassured.http.Headers;
 import io.restassured.response.ValidatableResponse;
 import config.EndPoint;
 import org.json.JSONObject;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
-
-//import java.util.List;
-//import java.util.Arrays;
 import java.util.stream.IntStream;
 import org.junit.Test;
 //import com.github.fge.jsonpatch.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
-//import static org.hamcrest.CoreMatchers.*;
 
 public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
@@ -29,8 +24,6 @@ public  class TestRestJSON extends TestConfig {
 	public static String endLine = "  --------------------\n" ;
 	
 	//------------------------------------- test 1 Get --------------------------------------
-	
-	
 	@Test														
 	public void myTest1()  {
 	  
@@ -68,15 +61,15 @@ public  class TestRestJSON extends TestConfig {
 	public void myTest2()  {
 		if  (mycheck(myTests, 2))    {              // 2 = this test number
 			System.out.println(begLine + "myTest2 Get One Record" + endLine);
-			String selectedTest = "/3";
+			String selectedRecord = "/3";
 			String selectedTestString = "Inception";
-			System.out.println("\n\n------Testing Record:     "  +   selectedTest  + "  " +  selectedTestString + "----------\n\n");
+			System.out.println("\n\n------Testing Record:     "  +   selectedRecord  + "  " +  selectedTestString + "----------\n\n");
 
 			given()
 			.log().all()
 			.spec(mySpec)
 			.when() 
-			.get(selectedTest)
+			.get(selectedRecord)
 			.then()
 			.spec(responseSpecGet)
 			.assertThat().body(containsString(selectedTestString))
@@ -110,40 +103,42 @@ public  class TestRestJSON extends TestConfig {
 			.spec(responseSpecPost)
 			.log().all();		
 			System.out.println(endLine + "end Test 3" + endLine);
+			String selectedRecord = "/3";
 		}	
 		else {
 			System.out.println(endLine + "skipped Test 3" + endLine);
 		}
 	}
 	//------------------------------------- test 4 --------------------------------------
-	//@Test
+	
+	@Test
 	public void myTest4()  {
+		int a = 1;
+		
 		if  (mycheck(myTests,4))    {              // 4 = this test number
-			System.out.println(begLine + "Beginning myTest4" + endLine);
+			System.out.println(begLine + "mycheck worked " + endLine);
+		}
+			System.out.println(begLine + "Beginning myTest4 PATCH record " + endLine);
 			System.out.println(begLine + "Fiddler must be running! " + endLine);
-			// 																	Map<String, Object>  jsonAsMap = new HashMap<>();
-			//																	jsonAsMap.put("name", "Test12");
-			//																	jsonAsMap.put("title", "Test127123");
-			//																	jsonAsMap.put("contactEmail", "x");
-			//																	jsonAsMap.put("description", "testing purpose");
+			String recNumber = "/4";
+			String myPatch =   " {  \"rating\": 44 }"  ;     // very simple - just field name to replace and value
 
-			String repStr = "[   {\"replace\": \"/rating\", \"value\": 7} ]";			
-			String recNumber = "/3";
-			
 			given()
 			.spec(mySpec)
-			.body(repStr)
+			.body(myPatch)
 			.when()
-			.post(recNumber)    
+			.patch(recNumber)    
 			.then()
-			.spec(responseSpecPost)
-			.log().all();															    														
+			.spec(responseSpecGet)       // 200
+			.log().all();			
+			
 			System.out.println(endLine + "end Test 4" + endLine);
+
 		}	
-		else {
-			System.out.println(endLine + "skipped Test 4" + endLine);
-		}
-	}  // test 4
+//		else {
+//			System.out.println(endLine + "skipped Test 4" + endLine);
+//		}
+//	}  // test 4
 }  // class
 
 
