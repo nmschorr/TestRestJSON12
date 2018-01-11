@@ -9,8 +9,13 @@ package com.nmschorr;
 
 import static  java.lang.System.out;
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;import config.TestConfig;
+import static  io.restassured.http.ContentType.JSON;
+
+import static org.hamcrest.Matchers.*;
+import config.TestConfig;
 import static org.hamcrest.CoreMatchers.containsString;
+
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import config.EndPoint;
 import org.json.JSONObject;
@@ -201,20 +206,33 @@ public  class TestRestJSON extends TestConfig {
 	
 	
 	//------------------------------------- test 99  --------------------------------------
-	@Test
+//	@Test
 	public void myTest7() {
-		out.println("in print records");
+		out.println("\n--------------- In print records   \n");
+		
 		given()
-	//	.log().all()
+		.log().headers()
 		.spec(mySpec)
 		.when()
+		//.options()
 		.get()                                         // this will get all records
 		.then()
 		.spec(responseSpecGet)
-		.log().body();                                  // prints records only, no headers, etc.
-		out.println("done with print records");
+		.contentType(JSON) 
+		.log().headers()
+	  	.log().body()
+		;
+		out.println("\n--------------- Done with print records");
 	}
 	
+	@Test
+	public void myTest8() {
+		Response response = given().spec(mySpec).get();
+		String director = response.path("director[0]");
+		System.out.println("\nfirst director in db "  + director);
+		System.out.println("\n  " + response.path("[0]") );
+	}
+
 	public void printEndLine(int tnbr, String ttype, String tname) {
 
 		switch (ttype) {

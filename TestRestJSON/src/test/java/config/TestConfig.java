@@ -1,6 +1,7 @@
 package config; 
 
 import config.EndPoint;
+import static  io.restassured.http.ContentType.JSON;
 import io.restassured.RestAssured;
 import  io.restassured.builder.RequestSpecBuilder;
 import  io.restassured.builder.ResponseSpecBuilder;
@@ -23,22 +24,20 @@ public class TestConfig {
 	@BeforeClass
 	public static void SetUp() {
         RestAssured.proxy("localhost", 8888);	  // for fiddler
-		String   myBase        = "http://localhost:3000"; 
+		String   myBase        = "http://localhost"; 
 		String   myBasePath = "/movies";   //  
 		Integer myPort         = 3000;        // for JSONserver
  		String MYBASE = myBase;
 	    String MYBASEPATH = myBasePath;
-	    String HEADERcon1 = "Content-Type";
-	    String HEADERcon2 = "application/json";
-	    String HEADERacc1 = "Accept";
-	    String HEADERacc2 = "application/json";
-	    													    
+	  //  String HEADERcon1 = "Content-Type";
+	 //   String HEADERcon2 = "application/json";
+
 		mySpec = new RequestSpecBuilder()
 			.setBaseUri(MYBASE) 													
 		    .setBasePath(MYBASEPATH)
 			.setPort(myPort)
-			.addHeader(HEADERcon1, HEADERcon2)
-			.addHeader(HEADERacc1, HEADERacc2)
+			.setContentType(JSON)
+			.setAccept(JSON)
 		    .build();
 	 
 		System.out.println("\n-----------------Must run with Fidder!---------------------------\n");
