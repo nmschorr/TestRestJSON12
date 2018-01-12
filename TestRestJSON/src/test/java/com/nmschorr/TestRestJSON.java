@@ -10,8 +10,13 @@ package com.nmschorr;
 import static  java.lang.System.out;
 import static io.restassured.RestAssured.*;
 import static  io.restassured.http.ContentType.JSON;
+import groovy.json.JsonSlurper ;
 
 import static org.hamcrest.Matchers.*;
+
+import java.net.URL;
+import java.util.Map;
+
 import config.TestConfig;
 import static org.hamcrest.CoreMatchers.containsString;
 
@@ -231,6 +236,23 @@ public  class TestRestJSON extends TestConfig {
 		String director = response.path("director[0]");
 		System.out.println("\nfirst director in db "  + director);
 		System.out.println("\n  " + response.path("[0]") );
+		String lastTeamName = response.path("director[-1]");
+		System.out.println("\n  " + lastTeamName );
+		java.util.ArrayList<String> allTeamNames = response.path("director");
+		System.out.println("\n  all directors:  " + allTeamNames );
+		java.util. ArrayList<Map<String,?>> allTeamData = response.path("director");
+		System.out.println("\n  all directors mapped:  " + allTeamData );
+	      
+		JsonSlurper jsonSlurper = new JsonSlurper();
+		///URL myu = new URL("http", "localhost", 3000, "/");
+		//URL(String protocol, String host, int port, String file)
+		
+	//	Object myObj = jsonSlurper.parse(myu);
+		int a = 0;
+ 
+		    
+		//println(object)
+	//	def allTeamNames = object.teams.name
 	}
 
 	public void printEndLine(int tnbr, String ttype, String tname) {

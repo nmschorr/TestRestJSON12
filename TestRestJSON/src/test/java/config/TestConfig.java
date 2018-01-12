@@ -29,6 +29,7 @@ public class TestConfig {
 		Integer myPort         = 3000;        // for JSONserver
  		String MYBASE = myBase;
 	    String MYBASEPATH = myBasePath;
+	    String myprot = "HTTP";
 	  //  String HEADERcon1 = "Content-Type";
 	 //   String HEADERcon2 = "application/json";
 
