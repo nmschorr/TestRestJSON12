@@ -14,7 +14,11 @@ import groovy.json.JsonSlurper ;
 
 import static org.hamcrest.Matchers.*;
 
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import config.TestConfig;
@@ -23,9 +27,14 @@ import static org.hamcrest.CoreMatchers.containsString;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import config.EndPoint;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
@@ -166,7 +175,7 @@ public  class TestRestJSON extends TestConfig {
 			myPUT.put("director","Tom Cruise3");
 			myPUT.put("name","Mission Impossible 3");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
 			System.out.println("\n\n------ex obj Record:    \n "  +   myPUT.toString()  + "  "+ "----------\n\n");
-
+     
 			given()
 			.spec(mySpec)
 			.body(myPUT.toString())
@@ -183,6 +192,7 @@ public  class TestRestJSON extends TestConfig {
 		}
 	}  // test 5
 
+  
 	//------------------------------------- test 6 DELETE --------------------------------------
 	//   this will replace an entire record
 	@Test
@@ -210,7 +220,7 @@ public  class TestRestJSON extends TestConfig {
 	}  // test 6	
 	
 	
-	//------------------------------------- test 99  --------------------------------------
+	//------------------------------------- test 7  --------------------------------------
 //	@Test
 	public void myTest7() {
 		out.println("\n--------------- In print records   \n");
@@ -229,7 +239,8 @@ public  class TestRestJSON extends TestConfig {
 		;
 		out.println("\n--------------- Done with print records");
 	}
-	
+	//------------------------------------- test 8  --------------------------------------
+
 	//@Test
 	public void myTest8() {
 		Response response = given().spec(mySpec).get();
@@ -254,8 +265,9 @@ public  class TestRestJSON extends TestConfig {
 		//println(object)
 	//	def allTeamNames = object.teams.name
 	}
+	//------------------------------------- test 9  --------------------------------------
 
-	@Test
+	//@Test
 	public void myTest9() {
 		out.println("\n--------------- In 9    \n");
 		Response response =  given()

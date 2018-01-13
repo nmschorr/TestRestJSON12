@@ -1,7 +1,7 @@
 package config;
 
 public interface EndPoint {
-	public int[] myTestList = { 7 };  // edit this list
+	public int[] myTestList = { 5 };  // edit this list
 	//public int[] myTestList = {  1, 2, 3, 4 };  // edit this list
 
     String ALBUMBASE = "/albums";
