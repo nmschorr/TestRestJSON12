@@ -230,7 +230,7 @@ public  class TestRestJSON extends TestConfig {
 		out.println("\n--------------- Done with print records");
 	}
 	
-	@Test
+	//@Test
 	public void myTest8() {
 		Response response = given().spec(mySpec).get();
 		String director = response.path("director[0]");
@@ -254,6 +254,22 @@ public  class TestRestJSON extends TestConfig {
 		//println(object)
 	//	def allTeamNames = object.teams.name
 	}
+
+	@Test
+	public void myTest9() {
+		out.println("\n--------------- In 9    \n");
+		Response response =  given()
+				.spec(mySpec)
+				.when()
+				.get("/1")                                         // this will get all records
+				;
+		out.println( response.body().prettyPrint());
+
+	}		
+		
+		
+		
+		
 
 	public void printEndLine(int tnbr, String ttype, String tname) {
 
