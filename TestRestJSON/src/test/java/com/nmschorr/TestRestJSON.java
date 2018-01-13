@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import config.TestConfig;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -33,8 +34,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParser;
+//import com.fasterxml.jackson.core.*;
+//import com.fasterxml.jackson.databind.*;
+//import com.google.gson.JsonObject;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+//import com.google.gson.*;
+//import com.google.gson.JsonParser.*;
 
 public  class TestRestJSON extends TestConfig {
 	public static String   myBasePath = EndPoint.MOVIE_EP;  
@@ -158,6 +167,9 @@ public  class TestRestJSON extends TestConfig {
 			printEndLine(testNumber,"skip",testName);
 		}
 	}  // test 4
+
+	
+	
 	//------------------------------------- test 5 PUT --------------------------------------
 	//   this will replace an entire record
 	@Test
@@ -176,6 +188,8 @@ public  class TestRestJSON extends TestConfig {
 			myPUT.put("name","Mission Impossible 3");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
 			System.out.println("\n\n------ex obj Record:    \n "  +   myPUT.toString()  + "  "+ "----------\n\n");
      
+			retMap(myPUT);
+			
 			given()
 			.spec(mySpec)
 			.body(myPUT.toString())
@@ -295,6 +309,27 @@ public  class TestRestJSON extends TestConfig {
 		default:  
 				break;
 		}
+	}
+	
+	//https://stackoverflow.com/questions/2779251/how-can-i-convert-json-to-a-hashmap-using-gson
+	//@Test
+	public  void retMap(JSONObject inJSON) {
+			String newStr = inJSON.toString();
+		Object ob = (Object)newStr;
+		
+
+		HashMap<String, Object> mh = new HashMap<String, Object>();
+		ObjectMapper mapper;
+		//mh = (HashMap)inJSON;
+		//JSONArray ja = inJSON.toJSONArray(ja);
+		
+		//Map<String, Object> map = mapper.readValue(ja[0]   , new TypeReference<Map<String,Object>>(){});		
+		
+		//JsonElement jsonElement = (JsonElement)ob;
+		
+		// HashMap<String, Object>
+	    int a = 1;
+	   // return map;
 	}
 }        // class
 
