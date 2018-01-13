@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -183,18 +184,18 @@ public  class TestRestJSON extends TestConfig {
 				//	String myPUT =  "{   \"name\": \"Mission Impossible\",  \"director\": \"Tom Cruise\",  \"rating\": 9.0 }";    // this string works for Post
 	
 			JSONObject myPUT = new JSONObject();  //no need for id, add to object in reverse order
-			myPUT.put("rating","93");
+			myPUT.put("rating",9);
 			myPUT.put("director","Tom Cruise3");
 			myPUT.put("name","Mission Impossible 3");      	//	obj.put("id", new Integer(12));  // no need for id - gets it automatically
 			System.out.println("\n\n------ex obj Record:    \n "  +   myPUT.toString()  + "  "+ "----------\n\n");
      
-			retMap(myPUT);
+			Map<String, Object> mym = toMap(myPUT);
 			
 			given()
 			.spec(mySpec)
 			.body(myPUT.toString())
 			.when()
-			.put(recNumber)    
+				.put(recNumber)    
 			.then()
 			.spec(responseSpecGet)       // 200
 			.log().all();			
@@ -281,22 +282,18 @@ public  class TestRestJSON extends TestConfig {
 	}
 	//------------------------------------- test 9  --------------------------------------
 
-	//@Test
+	@Test
 	public void myTest9() {
-		out.println("\n--------------- In 9    \n");
+		out.println("\n--------------- In 9  Printing all records  \n");
 		Response response =  given()
 				.spec(mySpec)
 				.when()
-				.get("/1")                                         // this will get all records
+				.get()                                         // this will get all records
 				;
 		out.println( response.body().prettyPrint());
 
 	}		
 		
-		
-		
-		
-
 	public void printEndLine(int tnbr, String ttype, String tname) {
 
 		switch (ttype) {
@@ -311,26 +308,37 @@ public  class TestRestJSON extends TestConfig {
 		}
 	}
 	
-	//https://stackoverflow.com/questions/2779251/how-can-i-convert-json-to-a-hashmap-using-gson
-	//@Test
-	public  void retMap(JSONObject inJSON) {
-			String newStr = inJSON.toString();
-		Object ob = (Object)newStr;
-		
+//https://stackoverflow.com/questions/41243880/how-to-convert-jsonobject-to-new-map-for-all-its-keys-using-iterator-java	
+        public static Map<String, Object> toMap(JSONObject jsonobj)  throws JSONException {
+            Map<String, Object> map = new HashMap<String, Object>();
+            Iterator<String> keys = jsonobj.keys();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                Object value = jsonobj.get(key);
+                if (value instanceof JSONArray) {
+                    value = toList((JSONArray) value);
+                } else if (value instanceof JSONObject) {
+                    value = toMap((JSONObject) value);
+                }   
+                map.put(key, value);
+            }   return map;
+        }
+        
+        public static List<Object> toList(JSONArray array) throws JSONException {
+            List<Object> list = new ArrayList<Object>();
+            for(int i = 0; i < array.length(); i++) {
+                Object value = array.get(i);
+                if (value instanceof JSONArray) {
+                    value = toList((JSONArray) value);
+                }
+                else if (value instanceof JSONObject) {
+                    value = toMap((JSONObject) value);
+                }
+                list.add(value);
+            }   return list;
+    }
 
-		HashMap<String, Object> mh = new HashMap<String, Object>();
-		ObjectMapper mapper;
-		//mh = (HashMap)inJSON;
-		//JSONArray ja = inJSON.toJSONArray(ja);
-		
-		//Map<String, Object> map = mapper.readValue(ja[0]   , new TypeReference<Map<String,Object>>(){});		
-		
-		//JsonElement jsonElement = (JsonElement)ob;
-		
-		// HashMap<String, Object>
-	    int a = 1;
-	   // return map;
-	}
+
 }        // class
 
 
